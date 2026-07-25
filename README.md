@@ -60,9 +60,9 @@ soundcore-ai-workflow/
 | backend/engine/ | 朱子钦 | 爬虫、清洗、格式化、报告 |
 | backend/utils/ | 朱子钦 | LLM调用、重试工具 |
 | backend/config.py | 朱子钦 | 全局配置 |
-| backend/agents/ | 同学 | 4个AI Agent |
-| backend/prompts/ | 同学 | Agent的System Prompt |
-| frontend/ | 同学 | React Web界面 |
+| backend/agents/ | 于金永 | 4个AI Agent |
+| backend/prompts/ | 于金永 | Agent的System Prompt |
+| frontend/ | 于金永 | React Web界面 |
 | backend/routers/ | 联调 | API路由 |
 
 ## 环境说明
