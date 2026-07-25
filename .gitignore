@@ -20,9 +20,9 @@ dist/
 frontend/node_modules/
 frontend/dist/
 
-# IDE
-.vscode/
-.idea/
+# IDE（只提交 settings.json，其他开发者本地文件忽略）
+.vscode/*
+!.vscode/settings.json
 
 # 敏感配置（含API Key等，不提交）
 backend/local_config.py
@@ -31,5 +31,14 @@ backend/local_config.py
 .DS_Store
 Thumbs.db
 
-# Playwright 浏览器（每个开发者自己下载）
+# Playwright 浏览器（每个开发者自己下载到项目内）
 .playwright/
+browsers/
+
+# Python 安装目录（每个开发者自己安装）
+python310/
+
+# 安装包缓存
+*.zip
+*.exe
+*.tar.gz

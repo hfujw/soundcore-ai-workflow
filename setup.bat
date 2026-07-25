@@ -18,8 +18,9 @@ echo [2/3] 安装Python依赖...
 call env\Scripts\activate
 pip install -r requirements.txt
 
-REM 第3步：下载Chromium浏览器（Playwright需要，自动下载到项目内）
-echo [3/3] 下载 Chromium 浏览器...
+REM 第3步：下载Chromium浏览器（装到项目文件夹内，不污染系统）
+echo [3/3] 下载 Chromium 浏览器（到项目文件夹内）...
+set PLAYWRIGHT_BROWSERS_PATH=%CD%\browsers
 python -m playwright install chromium
 
 echo ========================================
