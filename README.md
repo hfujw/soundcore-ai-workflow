@@ -71,3 +71,4 @@ soundcore-ai-workflow/
 - 所有数据存储在 `data/` 中
 - 浏览器驱动（Chromium）由 Playwright 自动下载到项目内
 - 两个开发者各自创建自己的 `env/`，互不影响
+于金永
