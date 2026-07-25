@@ -22,6 +22,9 @@ BACKEND = Path(__file__).parent
 DATA = ROOT / "data"
 FRONTEND = ROOT / "frontend" / "src"
 
+# ── Playwright 浏览器路径（装在项目内，不污染系统）──
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = str(ROOT / "browsers")
+
 # ── 数据存储路径 ──
 DATA_RAW = DATA / "raw"           # 爬虫原始JSON
 DATA_CLEANED = DATA / "cleaned"   # 清洗后统一格式JSON
