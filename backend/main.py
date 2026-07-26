@@ -18,8 +18,21 @@ API 文档:
   启动后访问 http://localhost:8000/docs （Swagger自动生成）
 ================================================================
 """
+import io
 import sys
-from pathlib import Path
+
+# ── Windows GBK 编码修复：强制 stdout/stderr 使用 UTF-8 ──
+if sys.platform == "win32":
+    for stream_name in ("stdout", "stderr"):
+        stream = getattr(sys, stream_name, None)
+        if stream and hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8")
+            except Exception:
+                pass
+
+import sys  # noqa: E402
+from pathlib import Path  # noqa: E402
 
 # 确保项目根目录在 Python 搜索路径中
 sys.path.insert(0, str(Path(__file__).parent.parent))
