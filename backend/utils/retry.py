@@ -32,7 +32,11 @@ def retry(max_attempts: int = 3, delay: float = 2.0, backoff: float = 2.0):
                     last_err = e
                     if attempt < max_attempts - 1:
                         wait = delay * (backoff ** attempt)
-                        print(f"  ⚠️ 第{attempt+1}次失败: {e}，{wait:.0f}秒后重试...")
+                        try:
+                            print(f"  [retry] Attempt {attempt+1} failed: {e}, retry in {wait:.0f}s...")
+                        except UnicodeEncodeError:
+                            safe = str(e).encode("utf-8", errors="replace").decode("utf-8", errors="replace")
+                            print(f"  [retry] Attempt {attempt+1} failed: {safe}, retry in {wait:.0f}s...")
                         time.sleep(wait)
             raise last_err
         return wrapper

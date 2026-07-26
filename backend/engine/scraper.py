@@ -17,6 +17,7 @@
 import asyncio
 import json
 import logging
+import sys
 import time
 from abc import ABC, abstractmethod
 from datetime import datetime
@@ -101,7 +102,15 @@ class BaseScraper(ABC):
 
     def _log(self, msg: str):
         """结构化日志"""
-        print(f"  [{self.platform}] {msg}")  # 先print，后续可换logging
+        if sys.platform == "win32":
+            # Windows GBK 容错：替换不可编码字符
+            try:
+                print(f"  [{self.platform}] {msg}")
+            except UnicodeEncodeError:
+                safe = msg.encode("utf-8", errors="replace").decode("utf-8", errors="replace")
+                print(f"  [{self.platform}] {safe}")
+        else:
+            print(f"  [{self.platform}] {msg}")
 
     @staticmethod
     def _try_selectors(page_or_item, selectors: list[str], attr: str = "inner_text"):
@@ -782,7 +791,11 @@ async def scrape_reviews(product_name: str, platforms: list[str]) -> dict[str, l
     output = {}
     for result in results:
         if isinstance(result, Exception):
-            print(f"  ❌ 爬虫异常: {result}")
+            try:
+                print(f"  [scraper] crawl error: {result}")
+            except UnicodeEncodeError:
+                safe = str(result).encode("utf-8", errors="replace").decode("utf-8", errors="replace")
+                print(f"  [scraper] crawl error: {safe}")
             continue
         platform, reviews = result
         output[platform] = reviews

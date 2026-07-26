@@ -1,23 +1,23 @@
 # ============================================================
-# 项目全部 Python 依赖
-# 安装方式：pip install -r requirements.txt
-# 所有依赖安装在 env/ 虚拟环境中，不污染系统 Python
+# Project Python dependencies
+# Install: pip install -r requirements.txt
+# All dependencies installed in env/ virtual environment
 # ============================================================
 
-# Web 框架
+# Web framework
 fastapi
 uvicorn[standard]
 websockets
 
-# 爬虫引擎
-# crawl4ai  ← Python 3.8不兼容，暂时跳过。所有爬虫有 requests 兜底
+# Scraping engine
 playwright
 requests
 beautifulsoup4
 lxml
 
-# 数据处理
+# Data processing
 pandas
 
-# 工具
+# Utilities
 python-dotenv
+httpx

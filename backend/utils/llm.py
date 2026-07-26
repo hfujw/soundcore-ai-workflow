@@ -19,11 +19,28 @@ DeepSeek LLM 调用封装
 ================================================================
 """
 import json
+import os
 import requests
 from config import (
-    DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL,
+    DEEPSEEK_BASE_URL,
     DEEPSEEK_MODEL, DEEPSEEK_TEMPERATURE, DEEPSEEK_MAX_TOKENS, DEEPSEEK_TIMEOUT
 )
+
+
+def _get_api_key() -> str:
+    """动态获取 DeepSeek API Key：优先取环境变量（流水线运行时动态设置），
+    其次取 config.py 中从 .env 读到的值"""
+    key = os.environ.get("DEEPSEEK_API_KEY", "")
+    if key:
+        return key
+    # 如果 config.py 有值（从 .env 文件读取），fallback 过去
+    try:
+        from config import DEEPSEEK_API_KEY as cfg_key
+        if cfg_key:
+            return cfg_key
+    except ImportError:
+        pass
+    return ""
 
 
 def ask_deepseek(
@@ -45,13 +62,19 @@ def ask_deepseek(
         LLM的文本回复
 
     Raises:
-        requests.RequestException: 网络层错误
+        requests.RequestException: 网络层错误（包含401）
         KeyError:                  API返回格式异常
     """
+    api_key = _get_api_key()
+    if not api_key:
+        raise ValueError(
+            "DeepSeek API Key 未设置。请在页面输入框中填写或设置环境变量 DEEPSEEK_API_KEY"
+        )
+
     resp = requests.post(
         f"{DEEPSEEK_BASE_URL}/chat/completions",
         headers={
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         },
         json={
@@ -76,10 +99,16 @@ def ask_deepseek_stream(system_prompt: str, user_message: str):
     用途: 给 WebSocket 推送给前端，实现"AI正在思考..."的实时文字流
     用法: for chunk in ask_deepseek_stream(sys, usr): websocket.send(chunk)
     """
+    api_key = _get_api_key()
+    if not api_key:
+        raise ValueError(
+            "DeepSeek API Key 未设置。请在页面输入框中填写或设置环境变量 DEEPSEEK_API_KEY"
+        )
+
     resp = requests.post(
         f"{DEEPSEEK_BASE_URL}/chat/completions",
         headers={
-            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         },
         json={
